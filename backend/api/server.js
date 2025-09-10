@@ -16,21 +16,21 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],               
 }));
 
-app.options("*", (req, res) => {
-  const origin = req.headers.origin;
-  if (origin && allowlist.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Vary", "Origin");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-  } else {
-    // Nếu không nằm trong allowlist, có thể 204 luôn
-    res.setHeader("Access-Control-Allow-Origin", "null");
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Max-Age", "600");
-  res.status(204).end();
-});
+// app.options("*", (req, res) => {
+//   const origin = req.headers.origin;
+//   if (origin && allowlist.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin);
+//     res.setHeader("Vary", "Origin");
+//     res.setHeader("Access-Control-Allow-Credentials", "true");
+//   } else {
+//     // Nếu không nằm trong allowlist, có thể 204 luôn
+//     res.setHeader("Access-Control-Allow-Origin", "null");
+//   }
+//   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.setHeader("Access-Control-Max-Age", "600");
+//   res.status(204).end();
+// });
 
 // Middleware /
 app.use(express.json());
