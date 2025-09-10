@@ -14,7 +14,7 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],               
 }));
 
-// Middleware
+// Middleware /
 app.use(express.json());
 
 app.get("/api/questions", async (req, res) => {
