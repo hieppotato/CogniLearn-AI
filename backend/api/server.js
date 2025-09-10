@@ -8,13 +8,25 @@ const serverless = require("serverless-http");
 const app = express();
 
 // Middleware to handle CORS
+const allowedOrigins = [
+  "https://cogni-learn-ai-client.vercel.app",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: ["https://cogni-learn-ai-client.vercel.app",
-   "http://localhost:5173"],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true                  
+  credentials: true
 }));
 
+app.options("*", cors()); 
 
 // Middleware
 app.use(express.json());
