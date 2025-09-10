@@ -11,8 +11,26 @@ const app = express();
 app.use(cors({
   origin: ["https://cogni-learn-ai-client.vercel.app",
    "http://localhost:5173"],
+   allowedHeaders: ["Content-Type", "Authorization"],
+  maxAge: 600, // cache preflight 10 phút
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],               
 }));
+
+app.options("*", (req, res) => {
+  const origin = req.headers.origin;
+  if (origin && allowlist.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+  } else {
+    // Nếu không nằm trong allowlist, có thể 204 luôn
+    res.setHeader("Access-Control-Allow-Origin", "null");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Max-Age", "600");
+  res.status(204).end();
+});
 
 // Middleware /
 app.use(express.json());
