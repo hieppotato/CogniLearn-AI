@@ -9,7 +9,7 @@ import rehypeKatex from 'rehype-katex';
 import { IconHttpDelete } from "@tabler/icons-react";
 import axios from "axios";
 
-const API_BASE = "http://localhost:8000"; // đổi thành API backend của bạn
+const API_BASE = "https://cognilearn-ai.onrender.com/api"; // đổi thành API backend của bạn
 
 export default function ChatPage({userInfo}) {
   const userId = userInfo?.id;
