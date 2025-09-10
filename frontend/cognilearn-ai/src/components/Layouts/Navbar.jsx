@@ -8,11 +8,11 @@ import {
   IconLogout,
 } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleLogout } from '../../utils/logout';
 import classes from '../../pages/NavbarMinimal.module.css';
 import Notifications from '../../pages/Home/Notifications';
 import { useState } from 'react';
 import { Modal } from '@mantine/core';  
+import axiosInstance from '../../utils/axiosInsantce';
 
 function NavbarLink({ icon: Icon, label, active, onClick, path }) {
   const navigate = useNavigate();
@@ -40,6 +40,31 @@ function NavbarLink({ icon: Icon, label, active, onClick, path }) {
 export default function Navbar() {
   const location = useLocation();
   const [opened, setOpened] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+
+      const token = localStorage.getItem('access_token');
+
+      if (token) {
+        await axiosInstance.post('/logout', {
+          access_token: token
+        });
+      }
+
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user');
+
+      navigate('/login'); 
+
+    } catch (error) {
+      console.error('Logout error:', error);
+      localStorage.clear();
+      navigate('/login');
+    }
+  };
 
   const handleNotification = () => {
     setOpened(true);
