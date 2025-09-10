@@ -753,5 +753,7 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
-module.exports = (req, res) => app(req, res);
-
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
