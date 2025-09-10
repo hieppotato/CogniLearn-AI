@@ -46,7 +46,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
 
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem('token');
 
       if (token) {
         await axiosInstance.post('/logout', {
@@ -54,7 +54,7 @@ export default function Navbar() {
         });
       }
 
-      localStorage.removeItem('access_token');
+      localStorage.removeItem('token');
       localStorage.removeItem('user');
 
       navigate('/login'); 
