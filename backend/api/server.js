@@ -711,7 +711,7 @@ app.post("/api/sessions/:sessionId/messages", async (req, res) => {
 
     if (sender === "user") {
     const { data: existingMsgs } = await supabase
-      .from("chat_messages ")
+      .from("chat_messages")
       .select("id")
       .eq("session_id", sessionId);
 
