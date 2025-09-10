@@ -741,4 +741,5 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
+module.exports = app;
 module.exports.handler = serverless(app);
