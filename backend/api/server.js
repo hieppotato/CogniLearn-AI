@@ -18,7 +18,7 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 
-app.get("/questions", async (req, res) => {
+app.get("/api/questions", async (req, res) => {
   try {
     const { data, error } = await supabase.from("questions").select("*");
 
@@ -33,7 +33,7 @@ app.get("/questions", async (req, res) => {
 });
 
 // Lấy câu hỏi theo id
-app.get("/question/:id", async (req, res) => {
+app.get("/api/question/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -53,7 +53,7 @@ app.get("/question/:id", async (req, res) => {
   }
 });
 
-app.post("/create-contest", async (req, res) => {
+app.post("/api/create-contest", async (req, res) => {
   try {
     const { name, topics, number, author } = req.body; // dữ liệu gửi từ frontend
     
@@ -89,7 +89,7 @@ app.post("/create-contest", async (req, res) => {
   }
 });
 
-app.get("/get-contest/:id", async (req, res) => {
+app.get("/api/get-contest/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -123,7 +123,7 @@ app.get("/get-contest/:id", async (req, res) => {
   }
 });
 
-app.get("/get-contests", async (req, res) => {
+app.get("/api/get-contests", async (req, res) => {
   const{limit} = req.query;
   try {
     const { data: contests, error } = await supabase
@@ -139,7 +139,7 @@ app.get("/get-contests", async (req, res) => {
   }
 });
 
-app.get("/get-contest-results", async (req, res) => {
+app.get("/api/get-contest-results", async (req, res) => {
   const { limit, userId } = req.query; // lấy user_id từ query
 
   if (!userId) {
@@ -179,7 +179,7 @@ app.get("/get-contest-results", async (req, res) => {
   }
 });
 
-app.get("/get-contest-result/:contestId", async (req, res) => {
+app.get("/api/get-contest-result/:contestId", async (req, res) => {
   const {contestId} = req.params;
 
   if (!contestId) {
@@ -221,7 +221,7 @@ app.get("/get-contest-result/:contestId", async (req, res) => {
   }
 });
 
-app.get("/get-progress/:userId", async (req, res) => {
+app.get("/api/get-progress/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -274,7 +274,7 @@ app.get("/get-progress/:userId", async (req, res) => {
   }
 });
 
-app.delete("/contest-progress/:id", async (req, res) => {
+app.delete("/api/contest-progress/:id", async (req, res) => {
   const { id } = req.params; // contestId
   const { userId } = req.query;
 
@@ -298,7 +298,7 @@ app.delete("/contest-progress/:id", async (req, res) => {
   }
 });
 
-app.delete("/session/:sessionId", async(req, res) => {
+app.delete("/api/session/:sessionId", async(req, res) => {
   const { sessionId } = req.params;
 
   try{
@@ -321,7 +321,7 @@ app.delete("/session/:sessionId", async(req, res) => {
   
 })
 
-app.post("/contest-result/:id", async (req, res) => {
+app.post("/api/contest-result/:id", async (req, res) => {
   try {
     const { id } = req.params; 
     const { name, questions, userId, point } = req.body;
@@ -365,7 +365,7 @@ app.post("/contest-result/:id", async (req, res) => {
     res.status(500).json({ error: "Có lỗi khi lưu kết quả" });
   }
 });
-app.get("/contest-progress/:contestId", async (req, res) => {
+app.get("/api/contest-progress/:contestId", async (req, res) => {
   const { contestId } = req.params;
   const { userId } = req.query;
 
@@ -385,7 +385,7 @@ app.get("/contest-progress/:contestId", async (req, res) => {
   }
 });
 
-app.post("/change-password", async (req, res) => {
+app.post("/api/change-password", async (req, res) => {
   const { userId, newPassword } = req.body;
 
   try {
@@ -403,7 +403,7 @@ app.post("/change-password", async (req, res) => {
 });
 
 // Lưu hoặc cập nhật tiến độ
-app.post("/contest-progress/:contestId", async (req, res) => {
+app.post("/api/contest-progress/:contestId", async (req, res) => {
   const { contestId } = req.params;
   const { userId, answers, currentQIndex, timePerQuestion, totalQuestions, doneQuestions } = req.body;
 
@@ -431,7 +431,7 @@ app.post("/contest-progress/:contestId", async (req, res) => {
   }
 });
 
-app.post("/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
   const { name, email, password, role } = req.body;
 
   try {
@@ -462,7 +462,7 @@ app.post("/signup", async (req, res) => {
   }
 }); 
 
-app.post("/profile-update", async (req, res) => {
+app.post("/api/profile-update", async (req, res) => {
   try {
     const { userInfo } = req.body;
 
@@ -491,7 +491,7 @@ app.post("/profile-update", async (req, res) => {
 });
 
 // ---------------- LOGIN ----------------
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -512,7 +512,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/get-profile", async (req, res) => {
+app.get("/api/get-profile", async (req, res) => {
   try {
     // Lấy token từ header Authorization
     const authHeader = req.headers.authorization;
@@ -547,7 +547,7 @@ app.get("/get-profile", async (req, res) => {
   }
 });
 
-app.post("/logout", async (req, res) => {
+app.post("/api/logout", async (req, res) => {
   try {
     const { access_token } = req.body;
     if (!access_token) {
@@ -578,7 +578,7 @@ app.post("/logout", async (req, res) => {
   }
 });
 
-app.get("/topic-stats-user", async (req, res) => {
+app.get("/api/topic-stats-user", async (req, res) => {
   try {
     const { data, error } = await supabase.rpc("get_topic_accuracy_user");
     if (error) throw error;
@@ -590,7 +590,7 @@ app.get("/topic-stats-user", async (req, res) => {
   }
 });
 
-app.get("/topic-stats", async (req, res) => {
+app.get("/api/topic-stats", async (req, res) => {
   try {
     const { data, error } = await supabase.rpc("get_topic_accuracy");
     if (error) throw error;
@@ -602,7 +602,7 @@ app.get("/topic-stats", async (req, res) => {
   }
 });
 
-app.get("/topics", async (req, res) => {
+app.get("/api/topics", async (req, res) => {
 
  try {
     const { data, error } = await supabase.rpc("get_question_topics");
@@ -615,7 +615,7 @@ app.get("/topics", async (req, res) => {
 
 });
 
-app.get("/search-topics", async (req, res) => {
+app.get("/api/search-topics", async (req, res) => {
   const { query } = req.query; 
   try {
     const { data, error } = await supabase.rpc("search_question_topics", {
@@ -630,7 +630,7 @@ app.get("/search-topics", async (req, res) => {
 });
 
 //Tạo session mới
-app.post("/sessions/:userId", async (req, res) => {
+app.post("/api/sessions/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -648,7 +648,7 @@ app.post("/sessions/:userId", async (req, res) => {
 });
 
 // Lấy danh sách session của 1 user
-app.get("/sessions/:userId", async (req, res) => {
+app.get("/api/sessions/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -666,7 +666,7 @@ app.get("/sessions/:userId", async (req, res) => {
 });
 
 // Lấy session mới nhất
-app.get("/sessions/last/:userId", async (req, res) => {
+app.get("/api/sessions/last/:userId", async (req, res) => {
   const { userId } = req.params;
   if (!userId) return res.status(400).json({ error: "Missing userId" });
 
@@ -683,7 +683,7 @@ app.get("/sessions/last/:userId", async (req, res) => {
 });
 
 // Lưu tin nhắn vào session
-app.post("/sessions/:sessionId/messages", async (req, res) => {
+app.post("/api/sessions/:sessionId/messages", async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { sender, content } = req.body;
@@ -724,7 +724,7 @@ app.post("/sessions/:sessionId/messages", async (req, res) => {
 });
 
 // Lấy tin nhắn của 1 session
-app.get("/sessions/:sessionId/messages", async (req, res) => {
+app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   try {
     const { sessionId } = req.params;
 
@@ -741,8 +741,6 @@ app.get("/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
-// Serve uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
 // Start Server
 module.exports = app;
 module.exports.handler = serverless(app);
