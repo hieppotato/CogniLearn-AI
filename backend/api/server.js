@@ -13,6 +13,7 @@ app.use(cors({
   methods: ["GET","POST","PUT","DELETE","OPTIONS"]
 }));
 
+app.options("*", cors());
 
 // Middleware
 app.use(express.json());
@@ -740,6 +741,4 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
-// Start Server
-module.exports = app;
 module.exports.handler = serverless(app);
