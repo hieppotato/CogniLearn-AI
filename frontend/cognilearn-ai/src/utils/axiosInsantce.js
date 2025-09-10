@@ -2,7 +2,7 @@ import axios from "axios";
 import { handleLogout } from "./logout";
 
 const axiosInstance = axios.create({
-  baseURL: "https://cognilearn-ai.onrender.com/api", // backend API
+  baseURL: "https://cognilearn-ai.onrender.com/api", // backend APIkhjk
   headers: {
     "Content-Type": "application/json",
   },
