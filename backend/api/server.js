@@ -25,7 +25,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-//app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -753,5 +753,5 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
-module.exports = app;
-module.exports.handler = serverless(app);
+module.exports = (req, res) => app(req, res);
+
