@@ -9,7 +9,8 @@ const app = express();
 
 // Middleware to handle CORS
 app.use(cors({
-  origin: "https://cogni-learn-ai.vercel.app/",   
+  origin: ["https://cogni-learn-ai-client.vercel.app",
+   "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true                  
 }));
