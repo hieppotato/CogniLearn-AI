@@ -2,11 +2,10 @@ import axios from "axios";
 import { handleLogout } from "./logout";
 
 const axiosInstance = axios.create({
-  baseURL: "https://cogni-learn-server.vercel.app", // backend API
+  baseURL: "https://cogni-learn-server.vercel.app/", // backend API
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // nếu backend có dùng cookie/session
 });
 
 axiosInstance.interceptors.response.use(
