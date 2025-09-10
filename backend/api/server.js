@@ -8,10 +8,8 @@ const serverless = require("serverless-http");
 const app = express();
 
 // Middleware to handle CORS
-app.use(cors({
-  origin: "*",
-  methods: ["GET","POST","PUT","DELETE","OPTIONS"]
-}));
+app.use(cors());
+app.options("*", cors());
 
 
 // Middleware
