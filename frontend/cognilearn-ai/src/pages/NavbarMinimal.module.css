@@ -1,0 +1,88 @@
+.navbar {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  box-sizing: border-box;
+  background-color: #112D4E;
+  z-index: 10; 
+}
+
+
+.navbarMain {
+  flex: 1;
+  margin-top: 50px;
+  overflow-y: auto;
+}
+
+.link {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: var(--mantine-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  color: #fbfbfb;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #112D4E;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Hiệu ứng hover cho tất cả các link */
+.link:hover {
+  background-color: #C6E7FF;
+  color: #112D4E;
+}
+
+/* Style cho link đang active */
+.link[data-active='true'] {
+  background-color: #C6E7FF;
+  color: #112D4E;
+}
+
+/* Hiệu ứng hover cho link đang active (tùy chọn) */
+.link[data-active='true']:hover {
+  background-color: #C6E7FF;
+  color: #112D4E;
+}
+
+.label {
+  flex: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    width: 60px;
+    height: 20px;
+    padding: var(--mantine-spacing-sm);
+  }
+
+  .link {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.toolBar {
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  box-sizing: border-box;
+  background-color: #fbfbfb;
+  z-index: 10;
+}
