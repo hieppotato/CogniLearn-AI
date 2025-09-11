@@ -76,7 +76,7 @@ app.post("/api/create-contest", async (req, res) => {
       seed_question_ids : topics,
       questions_per_topic : number
     })
-    console.log(response.data);
+
     const { data, error } = await supabase
       .from("contests")
       .insert([
