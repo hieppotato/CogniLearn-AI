@@ -539,8 +539,6 @@ app.get("/api/get-profile", async (req, res) => {
       return res.status(401).json({ error: "Invalid token" });
     }
 
-    console.log("Authenticated user:", user);
-
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*") 

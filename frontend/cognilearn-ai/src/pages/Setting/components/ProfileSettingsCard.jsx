@@ -24,7 +24,6 @@ const handleProfileSubmit = async (e) => {
     });
 
     alert("Cập nhật thành công!");
-    console.log("Profile updated:", res.data);
   } catch (err) {
     console.error("Update error:", err);
     alert("Có lỗi khi cập nhật!");
