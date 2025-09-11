@@ -161,7 +161,7 @@ const Dashboard = ({ userInfo }) => {
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={userInfo.experiences || []}>
                       <PolarGrid />
-                      <PolarAngleAxis dataKey="name" />
+                      <PolarAngleAxis dataKey="name" className="text-sm" />
                       <PolarRadiusAxis />
                       <Radar
                         dataKey="point"

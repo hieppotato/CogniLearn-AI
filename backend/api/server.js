@@ -768,6 +768,19 @@ app.get("/api/get-contest-user/:userId", async (req, res) => {
   }
 })
 
+app.delete("/api/delete-contest/:contestId", async (req, res) => {
+  const {contestId} = req.params;
+  try{
+    const {error} = await supabase
+    .from("contests")
+    .delete()
+    .eq("id", contestId);
+    if(error) throw error;
+  }catch(error){
+    res.status(400).json(error)
+  }
+})
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
