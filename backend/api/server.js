@@ -752,7 +752,7 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
 });
 
 app.get("/api/get-contest-user/:userId", async (req, res) => {
-  const { userId } = params;
+  const { userId } = req.params;
   try{
     const {data, error} = await supabase
     .from("contests")
