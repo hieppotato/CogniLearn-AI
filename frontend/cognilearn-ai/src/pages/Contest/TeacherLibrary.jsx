@@ -67,7 +67,7 @@ const TeacherLibrary = ({ userInfo }) => {
   const endIndex1 = startIndex1 + pageSize;
   const paginatedContest1 = displayedContests1.slice(startIndex1, endIndex1);
 
-  // 🔹 Callback chung
+  //  Callback chung
   const handleDeleteSuccess = (id, type) => {
      if (type === "your") {
       setLatestContests((prev) => prev.filter((c) => c.id !== id));

@@ -90,6 +90,8 @@ const Library = ({ userInfo }) => {
                   date={contest.created_at}
                   path={`/contest/${contest.id}`}
                   userInfo={contest.author}
+                  authorId={contest.authorId}
+                  teacherId={userInfo.id}
                 />
               ))}
             </SimpleGrid>
