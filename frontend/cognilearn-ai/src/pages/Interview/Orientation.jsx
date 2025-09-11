@@ -6,8 +6,7 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import { IconHttpDelete } from "@tabler/icons-react";
-import axios from "axios";
+import { IconTrashFilled } from "@tabler/icons-react";
 
 const API_BASE = "https://cognilearn-ai.onrender.com/api"; // đổi thành API backend của bạn
 
@@ -183,7 +182,7 @@ export default function Orientation({userInfo}) {
                 }`}
               >
                 {s.title || "New Chat"}
-                <IconHttpDelete onClick={() => handleDeleteSession(s.id)} />
+                <IconTrashFilled onClick={() => handleDeleteSession(s.id)} />
               </div>
             ))}
         </div>
