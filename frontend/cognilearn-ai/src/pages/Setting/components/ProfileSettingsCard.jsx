@@ -1,153 +1,83 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import { supabase } from './utils/supabaseClient';
+import React, { useState } from 'react';
+import { Button } from '@mantine/core';
+import axiosInstance from '../../../utils/axiosInsantce';
 
-import Login from "./pages/Auth/Login";
-import Signup from "./pages/Auth/SignUp";
-import DashBoard from "./pages/Home/DashBoard";
-import LandingPage from './pages/Home/LandingPage';
-import Contest from './pages/Contest/Contest';
-import CreateContest from './pages/Contest/CreateContest';
-import ContestResult from './pages/Contest/ContestResult';
-import PrivateRoute from './components/PrivateRoute';
-import axiosInstance from './utils/axiosInsantce';
-import Library from './pages/Contest/Library';
-import TeacherDashboard from './pages/Home/TeacherDashBoard';
-import UserProfile from './pages/Account/UserProfile';
-import Setting from './pages/Setting/Setting';
-import Notifications from './pages/Home/Notifications';
-import CogniChat from './pages/Interview/CogniChat';
-import TeacherLibrary from './pages/Contest/TeacherLibrary';
-import Standing from './pages/Contest/Standing';
-import LoaderPage from './components/Loader/LoaderPage';
-import Orientation from './pages/Interview/Orientation';
+const ProfileSettingsCard = ({ userInfo }) => {
 
-const App = () => {
-  const [userInfo, SetUserInfo] = useState(null);
+  const [profileData, setProfileData] = useState(userInfo);
+  
+  console.log(profileData);
 
-   const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem("refresh_token");
-  if (!refreshToken) return null;
+    const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  const { data, error } = await supabase.auth.refreshSession({
-    refresh_token: refreshToken,
-  });
+const handleProfileSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axiosInstance.post("/profile-update", {
+      userInfo: profileData,
+    });
 
-  if (error || !data?.session?.access_token) {
-    console.error("Refresh token error:", error);
-    return null;
+    alert("Cập nhật thành công!");
+  } catch (err) {
+    console.error("Update error:", err);
+    alert("Có lỗi khi cập nhật!");
   }
-
-  const newToken = data.session.access_token;
-  const newRefreshToken = data.session.refresh_token;
-  localStorage.setItem("token", newToken);
-  localStorage.setItem("refresh_token", newRefreshToken);
-  return newToken;
 };
 
-const fetchProfile = useCallback(async () => {
-  let token = localStorage.getItem("token");
-  try {
-    if (!token) {
-      SetUserInfo(null);
-      return;
-    }
-
-    const res = await axiosInstance.get("/get-profile", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    SetUserInfo(res.data.user);
-
-  } catch (err) {
-    if (err.response?.status === 401) {
-      const newToken = await refreshAccessToken();
-      if (!newToken) {
-        SetUserInfo(null);
-        return;
-      }
-
-      // Retry request với token mới //
-      try {
-        const res = await axiosInstance.get("/get-profile", {
-          headers: { Authorization: `Bearer ${newToken}` },
-        });
-        SetUserInfo(res.data.user);
-      } catch (retryErr) {
-        console.error("Retry fetchProfile failed:", retryErr);
-        SetUserInfo(null);
-      }
-    } else {
-      SetUserInfo(null);
-    }
-  }
-}, []);
-
-  useEffect(() => {
-    fetchProfile();
-    const handleStorageChange = () => {
-      fetchProfile();
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
   return (
-    <div >
-      <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage/>}/>
-          <Route path="/loader" element={<LoaderPage />} />
-          <Route path="/landing" element={<LandingPage/>}/>
-          <Route path="/cogni-chat/:sessionId" element={<CogniChat userInfo={userInfo}/>}/>      
-          <Route path="/orientation/:sessionId" element={<Orientation userInfo={userInfo}/>}/>     
-          <Route path="/login" element={<Login fetchProfile = {fetchProfile}/>}/>
-          <Route path="/signup" element={<Signup fetchProfile = {fetchProfile}/>}/>
-          <Route path="/contest/:id" element={<PrivateRoute><Contest userInfo = {userInfo}/></PrivateRoute>}/>
-          {userInfo?.role === "teacher" && <Route path="/create-contest" element={<PrivateRoute><CreateContest userInfo={userInfo}/></PrivateRoute>}/>}
-          {userInfo?.role === "teacher" && <Route path="/standing/:contestId/:name" element={<PrivateRoute><Standing /></PrivateRoute>}/>}
-          <Route path="/contest-result/:id" element={<PrivateRoute><ContestResult/></PrivateRoute>}/>
-          <Route path="/settings" element={<PrivateRoute><Setting userInfo={userInfo}/></PrivateRoute>}/>
-          <Route path="/notifications" element={<PrivateRoute><Notifications userInfo={userInfo}/></PrivateRoute>}/>
-          
-          <Route
-            path="/profile"
-            element={
-            <PrivateRoute>
-              {<UserProfile userInfo={userInfo}/>}
-            </PrivateRoute>
-          } 
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8">
+      <h2 className="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+        Thông tin cá nhân
+      </h2>
+      <form onSubmit={handleProfileSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="name"
+            value={profileData?.name}
+            onChange={handleProfileChange}
+            placeholder="Họ và tên"
+            className="w-full bg-gray-50 text-gray-900 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          />
+          <input
+            type="text"
+            name="phoneNumber"
+            value={profileData?.phoneNumber}
+            onChange={handleProfileChange}
+            placeholder="Số điện thoại"
+            className="w-full bg-gray-50 text-gray-900 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          />
+        </div>
+        <input
+          type="text"
+          name="address"
+          value={profileData?.address}
+          onChange={handleProfileChange}
+          placeholder="Địa chỉ"
+          className="w-full bg-gray-50 text-gray-900 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
         />
-          <Route
-            path="/library"
-            element={
-            <PrivateRoute>
-              {userInfo?.role ===  "student" ? (<Library userInfo={userInfo}/>) : (<TeacherLibrary userInfo={userInfo}/>)}
-            </PrivateRoute>
-          } />
-
-          <Route
-            path="/dashboard"
-            element={
-            <PrivateRoute>
-              {userInfo?.role ===  "student" ? (<DashBoard userInfo={userInfo}/>) : (<TeacherDashboard userInfo={userInfo}/>)}
-            </PrivateRoute>
-          }
+        <input
+          type="text"
+          name="classes"
+          value={profileData?.classes}
+          onChange={handleProfileChange}
+          placeholder="Lớp"
+          className="w-full bg-gray-50 text-gray-900 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
         />
-        </Routes>
-      </Router>
-      <Toaster
-        toastOptions={{
-          className:"",
-          style: {
-            fontSize: "13px",
-          },
-        }}
-      />
+        <div className="text-right">
+          <Button type="submit" color="indigo">
+            Lưu thay đổi
+          </Button>
+        </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default ProfileSettingsCard;
