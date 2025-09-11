@@ -17,7 +17,7 @@ export default function Orientation({userInfo}) {
   const navigate = useNavigate();
   const [sessions, setSessions] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("tôi phù hợp với ngành nghề nào?");
+  const [input, setInput] = useState("Tôi phù hợp với ngành nghề nào?");
   const [loading, setLoading] = useState(false);
 
   // Lấy danh sách sessions khi load trang
