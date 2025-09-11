@@ -107,10 +107,10 @@ const CreateContest = ({userInfo}) => {
     try {
         await axiosInstance.post("/create-contest", {
             name: contestName,
-            // Chuyển Set thành Array trước khi gửi đi
             topics: Array.from(selectedTopics),
             author: userInfo,
-            numberPerTopic: numberPerTopic // Gửi thêm số lượng câu hỏi
+            teacherId: userInfo.id,
+            numberPerTopic: numberPerTopic 
         });
         navigate("/loader");
     } catch (error) {

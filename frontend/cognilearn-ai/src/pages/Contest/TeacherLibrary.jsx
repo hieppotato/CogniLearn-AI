@@ -8,14 +8,19 @@ import ContestCard from "../../components/Cards/ContestCard";
 import { IconSearch } from "@tabler/icons-react";
 
 const TeacherLibrary = ({ userInfo }) => {
+  const userId = userInfo.id
   const navigate = useNavigate();
   const [latestContests, setLatestContests] = useState([]);
   const [contestResults, setContestResults] = useState([]);
-  const [opened, setOpened] = useState(false);
-  const [selectedResult, setSelectedResult] = useState(null);
+  const [yourContests, setYourContests] = useState([]);
 
   const [search, setSearch] = useState("");
   const [activePage, setActivePage] = useState(1);
+
+  
+  const [search1, setSearch1] = useState("");
+  const [activePage1, setActivePage1] = useState(1);
+
   const pageSize = 5; // mỗi trang tối đa 20 contest
 
   const fetchLatestContests = async () => {
@@ -27,9 +32,18 @@ const TeacherLibrary = ({ userInfo }) => {
     }
   };
 
+  const fetchYourContest = async () => {
+    try {
+      const res = await axiosInstance.get(`/get-contests-user/${userInfo?.id}`);
+      setYourContests(res.data || []);
+    } catch (err) {
+      console.error("Lỗi khi lấy các cuộc thi:", err);
+    }
+  }
+
   const fetchContestResults = async () => {
     try {
-      const res = await axiosInstance.get(`/get-contest-results?userId=${userInfo.id}&limit=5`);
+      const res = await axiosInstance.get(`/get-contest-results?userId=${userId}&limit=5`);
       setContestResults(res.data || []);
     } catch (err) {
       console.error("Lỗi khi lấy kết quả:", err);
@@ -41,7 +55,16 @@ const TeacherLibrary = ({ userInfo }) => {
     setActivePage(1); // reset về trang đầu khi search
   };
 
+  const handleSearchChange1 = (event) => {
+    setSearch1(event.currentTarget.value);
+    setActivePage1(1); // reset về trang đầu khi search
+  };
+
   const displayedContests = latestContests.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase().trim())
+  );
+
+  const displayedContests1 = yourContests.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase().trim())
   );
 
@@ -49,10 +72,15 @@ const TeacherLibrary = ({ userInfo }) => {
   const endIndex = startIndex + pageSize;
   const paginatedContest = displayedContests.slice(startIndex, endIndex);
 
+  const startIndex1 = (activePage1 - 1) * pageSize;
+  const endIndex1 = startIndex1 + pageSize;
+  const paginatedContest1 = displayedContests1.slice(startIndex1, endIndex1);
+
   useEffect(() => {
     if (!userInfo?.id) return;
     fetchLatestContests();
     fetchContestResults();
+    fetchYourContest();
   }, [userInfo]);
 
   return (
@@ -104,6 +132,47 @@ const TeacherLibrary = ({ userInfo }) => {
                 total={Math.ceil(latestContests.length / pageSize)}
                 value={activePage}
                 onChange={setActivePage}
+              />
+            </div>
+          )}
+        </div>
+        <div className="p-5 bg-white shadow rounded-2xl mb-6 text-[#112D4E]">
+          <Title order={4}>Danh sách bài kiểm tra của tôi</Title>
+          <TextInput
+            placeholder="Search contest..."
+            mb="md"
+            leftSection={<IconSearch size={16} stroke={1.5} />}
+            value={search1}
+            onChange={handleSearchChange1}
+          />
+
+          {paginatedContest1.length > 0 ? (
+            <SimpleGrid
+              cols={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} // tối đa 5 card 1 hàng
+              spacing="lg"
+              verticalSpacing="lg"
+            >
+              {paginatedContest1.map((contest) => (
+                <ContestCard
+                  key={contest.id}
+                  name={contest.name}
+                  date={contest.created_at}
+                  path={`/contest/${contest.id}`}
+                  userInfo={contest.author}
+                />
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Text ta="center" fw={500} mt="md">
+              Nothing found
+            </Text>
+          )}
+          {yourContests.length > pageSize && (
+            <div className="flex justify-center mt-4">
+              <Pagination
+                total={Math.ceil(yourContests.length / pageSize)}
+                value={activePage1}
+                onChange={setActivePage1}
               />
             </div>
           )}

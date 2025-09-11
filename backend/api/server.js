@@ -751,6 +751,22 @@ app.get("/api/sessions/:sessionId/messages", async (req, res) => {
   }
 });
 
+app.get("/api/get-contest-user/:userId", async (req, res) => {
+  const { userId } = params;
+  try{
+    const {data, error} = await supabase
+    .from("contests")
+    .select("*")
+    .eq("teacherId", userId)
+    .order("created_at", { ascending: false });
+    
+    if(error) throw error;
+    res.status(200).json(data);
+  }catch(err){
+    res.status(400).json(err);
+  }
+})
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
