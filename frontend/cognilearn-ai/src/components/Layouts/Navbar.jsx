@@ -53,7 +53,7 @@ export default function Navbar() {
           access_token: token
         });
       }
-
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
