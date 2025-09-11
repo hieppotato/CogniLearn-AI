@@ -67,7 +67,7 @@ app.get("/api/question/:id", async (req, res) => {
 
 app.post("/api/create-contest", async (req, res) => {
   try {
-    const { name, topics, number, author } = req.body; // dữ liệu gửi từ frontend
+    const { name, topics, number, author, teacherId } = req.body; // dữ liệu gửi từ frontend
     
     if (!name || !Array.isArray(topics)) {
       return res.status(400).json({ error: "Invalid input" });
@@ -76,14 +76,15 @@ app.post("/api/create-contest", async (req, res) => {
       seed_question_ids : topics,
       questions_per_topic : number
     })
-    // Insert contest vào Supabase
+    console.log(response.data);
     const { data, error } = await supabase
       .from("contests")
       .insert([
         { 
           name: name, 
           questions: response.data ,
-          author: author.name
+          author: author.name,
+          teacherId: teacherId
         }
       ])
       .select();

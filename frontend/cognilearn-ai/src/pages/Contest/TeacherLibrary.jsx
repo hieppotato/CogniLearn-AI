@@ -65,7 +65,7 @@ const TeacherLibrary = ({ userInfo }) => {
   );
 
   const displayedContests1 = yourContests.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase().trim())
+    c.name.toLowerCase().includes(search1.toLowerCase().trim())
   );
 
   const startIndex = (activePage - 1) * pageSize;
