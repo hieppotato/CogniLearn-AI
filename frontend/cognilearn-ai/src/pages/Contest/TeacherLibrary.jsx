@@ -34,7 +34,7 @@ const TeacherLibrary = ({ userInfo }) => {
 
   const fetchYourContest = async () => {
     try {
-      const res = await axiosInstance.get(`/get-contests-user/${userInfo?.id}`);
+      const res = await axiosInstance.get(`/get-contest-user/${userInfo?.id}`);
       setYourContests(res.data || []);
     } catch (err) {
       console.error("Lỗi khi lấy các cuộc thi:", err);
