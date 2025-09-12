@@ -5,8 +5,6 @@ import axiosInstance from '../../../utils/axiosInsantce';
 const ProfileSettingsCard = ({ userInfo }) => {
 
   const [profileData, setProfileData] = useState(userInfo);
-  
-  console.log(profileData);
 
     const handleProfileChange = (e) => {
     const { name, value } = e.target;
