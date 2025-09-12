@@ -16,6 +16,7 @@ const Library = ({ userInfo }) => {
 
   const [search, setSearch] = useState("");
   const [activePage, setActivePage] = useState(1);
+  const [activePage1, setActivePage1] = useState(1);
   const pageSize = 5; // mỗi trang tối đa 20 contest
 
   const fetchLatestContests = async () => {
@@ -48,6 +49,10 @@ const Library = ({ userInfo }) => {
   const startIndex = (activePage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const paginatedContest = displayedContests.slice(startIndex, endIndex);
+
+  const startIndex1 = (activePage1 - 1) * pageSize;
+  const endIndex1 = startIndex1 + pageSize;
+  const paginatedResults = contestResults.slice(startIndex1, endIndex1);
 
   useEffect(() => {
     if (!userInfo?.id) return;
@@ -129,7 +134,7 @@ const Library = ({ userInfo }) => {
               </Table.Thead>
 
               <Table.Tbody>
-                {contestResults.map((result) => (
+                {paginatedResults.map((result) => (
                   <Table.Tr key={result.id}>
                     <Table.Td
                       className="cursor-pointer text-[#112D4E] hover:underline"
@@ -162,6 +167,15 @@ const Library = ({ userInfo }) => {
             </Text>
           )}
         </div>
+        {contestResults.length > pageSize && (
+            <div className="flex justify-center mt-4">
+              <Pagination
+                total={Math.ceil(contestResults.length / pageSize)}
+                value={activePage1}
+                onChange={setActivePage1}
+              />
+            </div>
+          )}
       </main>
 
       {/* 🔹 Modal Xem Báo Cáo */}
