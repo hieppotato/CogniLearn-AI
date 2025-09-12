@@ -15,6 +15,7 @@ const Contest = ({ userInfo }) => {
   const [submitting, setSubmitting] = useState(false);
 
   const userId = userInfo?.id;
+  const userName = userInfo?.name
 
   // Load đề thi
   useEffect(() => {
