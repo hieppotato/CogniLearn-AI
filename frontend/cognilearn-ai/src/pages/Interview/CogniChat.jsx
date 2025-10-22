@@ -82,7 +82,7 @@ export default function ChatPage({userInfo}) {
 
       // Gọi chatbot API
       const res = await fetch(
-        "https://cloudvn.tino.page/webhook/3361c577-2f5c-440f-9191-6020fce3f636/chat",
+        "http://localhost:5678/webhook/receive-chat",
         {
           method: "POST",
           headers: { 
